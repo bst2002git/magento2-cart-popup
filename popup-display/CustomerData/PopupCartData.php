@@ -21,6 +21,8 @@ use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Framework\Pricing\Helper\Data as PricingHelper;
 use Magento\Sales\Model\ResourceModel\Report\Bestsellers\CollectionFactory as BestSellersCollectionFactory;
 use Prestafy\PopupDisplay\Helper\Data as Helper;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Catalog\Api\ProductRepositoryInterface as ProductRepositoryInterface;
 
 /**
  * PopupCart source
@@ -73,6 +75,13 @@ class PopupCartData implements SectionSourceInterface
      */
     protected $bestSellersCollectionFactory;
 
+		/**
+     * @var \Magento\Checkout\Model\Session
+     */
+		protected $checkoutSession;
+
+		protected $productRepository;
+
     /**
      * @param CollectionFactory $collectionFactory
      * @param Image $catalogImage
@@ -81,6 +90,9 @@ class PopupCartData implements SectionSourceInterface
      * @param Visibility $productVisibility
      * @param CartHelper $cartHelper
      * @param Helper $helper
+		 * @param BestSellersCollectionFactory $bestSellersCollectionFactory
+		 * @param CheckoutSession $checkoutSession
+		 * @param ProductRepositoryInterface $productRepository
      * @codeCoverageIgnore
      */
     public function __construct(
@@ -91,7 +103,9 @@ class PopupCartData implements SectionSourceInterface
         Visibility $productVisibility,
         CartHelper $cartHelper,
         Helper $helper,
-        BestSellersCollectionFactory $bestSellersCollectionFactory
+        BestSellersCollectionFactory $bestSellersCollectionFactory,
+				CheckoutSession $checkoutSession,
+				ProductRepositoryInterface $productRepository
     )
     {
         $this->collectionFactory = $collectionFactory;
@@ -102,6 +116,8 @@ class PopupCartData implements SectionSourceInterface
         $this->cartHelper = $cartHelper;
         $this->helper = $helper;
         $this->bestSellersCollectionFactory = $bestSellersCollectionFactory;
+				$this->checkoutSession = $checkoutSession;
+				$this->productRepository = $productRepository;
 
         $this->_initCollection();
     }
@@ -221,4 +237,59 @@ class PopupCartData implements SectionSourceInterface
             $this->collection->addIdFilter($productIds);
         }
     }
+
+		/**
+     * Create collection with UpSelling products
+     */
+    private function _upSellingProducts()
+    {
+        $productIds = [];
+				$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+				$upSellProducts = $product->getUpSellProducts();
+
+        foreach ($upSellProducts as $upSellProduct) {
+            $productIds[] = $upSellProduct->getId();
+        }
+
+        if (empty($productIds)) {
+            $this->_randomProducts();
+        } else {
+            $this->collection->addIdFilter($productIds);
+        }
+    }
+
+		private function _relatedProducts()
+		{
+		    $productIds = [];
+				$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+				$relatedProducts = $product->getRelatedProducts();
+
+        foreach ($relatedProducts as $relatedProduct) {
+            $productIds[] = $relatedProduct->getId();
+        }
+
+        if (empty($productIds)) {
+            $this->_randomProducts();
+        } else {
+            $this->collection->addIdFilter($productIds);
+        }
+		}
+
+		private function _crossSellProducts()
+		{
+        $productIds = [];
+			  $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+				$crossSellProducts = $product->getCrossSellProducts();
+
+        foreach ($crossSellProducts as $crossSellProduct) {
+            $productIds[] = $crossSellProduct->getId();
+        }
+
+        if (empty($productIds)) {
+            $this->_randomProducts();
+        } else {
+            $this->collection->addIdFilter($productIds);
+        }
+		}
+
 }
