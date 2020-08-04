@@ -29,7 +29,8 @@ use Magento\Catalog\Api\ProductRepositoryInterface as ProductRepositoryInterface
  */
 class PopupCartData implements SectionSourceInterface
 {
-    const CONFIG_PRODUCT_LIMIT = 4;
+    //const CONFIG_PRODUCT_LIMIT = 4;
+    const CONFIG_PRODUCT_LIMIT = 2;
     const CONFIG_COLLECTION_TYPE = 'cartpopup/settings/product_carousel';
 
     /**
@@ -75,12 +76,12 @@ class PopupCartData implements SectionSourceInterface
      */
     protected $bestSellersCollectionFactory;
 
-		/**
+    /**
      * @var \Magento\Checkout\Model\Session
      */
-		protected $checkoutSession;
+    protected $checkoutSession;
 
-		protected $productRepository;
+    protected $productRepository;
 
     /**
      * @param CollectionFactory $collectionFactory
@@ -90,9 +91,9 @@ class PopupCartData implements SectionSourceInterface
      * @param Visibility $productVisibility
      * @param CartHelper $cartHelper
      * @param Helper $helper
-		 * @param BestSellersCollectionFactory $bestSellersCollectionFactory
-		 * @param CheckoutSession $checkoutSession
-		 * @param ProductRepositoryInterface $productRepository
+     * @param BestSellersCollectionFactory $bestSellersCollectionFactory
+     * @param CheckoutSession $checkoutSession
+     * @param ProductRepositoryInterface $productRepository
      * @codeCoverageIgnore
      */
     public function __construct(
@@ -104,8 +105,8 @@ class PopupCartData implements SectionSourceInterface
         CartHelper $cartHelper,
         Helper $helper,
         BestSellersCollectionFactory $bestSellersCollectionFactory,
-				CheckoutSession $checkoutSession,
-				ProductRepositoryInterface $productRepository
+        CheckoutSession $checkoutSession,
+        ProductRepositoryInterface $productRepository
     )
     {
         $this->collectionFactory = $collectionFactory;
@@ -116,8 +117,8 @@ class PopupCartData implements SectionSourceInterface
         $this->cartHelper = $cartHelper;
         $this->helper = $helper;
         $this->bestSellersCollectionFactory = $bestSellersCollectionFactory;
-				$this->checkoutSession = $checkoutSession;
-				$this->productRepository = $productRepository;
+        $this->checkoutSession = $checkoutSession;
+        $this->productRepository = $productRepository;
 
         $this->_initCollection();
     }
@@ -136,7 +137,6 @@ class PopupCartData implements SectionSourceInterface
             'cartTotalCount' => $this->cartHelper->getSummaryCount(),
             'products' => $this->_getCollection()
         ];
-
         return $output;
     }
 
@@ -238,14 +238,14 @@ class PopupCartData implements SectionSourceInterface
         }
     }
 
-		/**
+    /**
      * Create collection with UpSelling products
      */
     private function _upSellingProducts()
     {
         $productIds = [];
-				$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-				$upSellProducts = $product->getUpSellProducts();
+        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+        $upSellProducts = $product->getUpSellProducts();
 
         foreach ($upSellProducts as $upSellProduct) {
             $productIds[] = $upSellProduct->getId();
@@ -258,11 +258,11 @@ class PopupCartData implements SectionSourceInterface
         }
     }
 
-		private function _relatedProducts()
-		{
-		    $productIds = [];
-				$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-				$relatedProducts = $product->getRelatedProducts();
+    private function _relatedProducts()
+    {
+        $productIds = [];
+        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+        $relatedProducts = $product->getRelatedProducts();
 
         foreach ($relatedProducts as $relatedProduct) {
             $productIds[] = $relatedProduct->getId();
@@ -273,13 +273,13 @@ class PopupCartData implements SectionSourceInterface
         } else {
             $this->collection->addIdFilter($productIds);
         }
-		}
+    }
 
-		private function _crossSellProducts()
-		{
+    private function _crossSellProducts()
+    {
         $productIds = [];
-			  $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-				$crossSellProducts = $product->getCrossSellProducts();
+        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+        $crossSellProducts = $product->getCrossSellProducts();
 
         foreach ($crossSellProducts as $crossSellProduct) {
             $productIds[] = $crossSellProduct->getId();
@@ -290,6 +290,6 @@ class PopupCartData implements SectionSourceInterface
         } else {
             $this->collection->addIdFilter($productIds);
         }
-		}
+    }
 
 }

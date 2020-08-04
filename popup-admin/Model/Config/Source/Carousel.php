@@ -24,7 +24,7 @@ class Carousel implements \Magento\Framework\Option\ArrayInterface
             ['value' => '_bestSellerProducts', 'label' => __('Best Sellers')],
             ['value' => '_latestProducts', 'label' => __('Latest Products')],
             ['value' => '_randomProducts', 'label' => __('Random Products')],
-						['value' => '_upSellingProducts', 'label' => __('Up-Sell Products')],
+            ['value' => '_upSellingProducts', 'label' => __('Up-Sell Products')],
             ['value' => '_relatedProducts', 'label' => __('Related Products')],
             ['value' => '_crossSellProducts', 'label' => __('Cross-Sell Products')]
         ];
