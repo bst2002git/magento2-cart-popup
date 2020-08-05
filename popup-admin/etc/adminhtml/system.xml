@@ -25,6 +25,7 @@
                        showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Display</label>
                     <source_model>Prestafy\PopupAdmin\Model\Config\Source\Carousel</source_model>
+										<comment>If no products are found in the selection, random products are always displayed.</comment>
                 </field>
             </group>
         </section>
