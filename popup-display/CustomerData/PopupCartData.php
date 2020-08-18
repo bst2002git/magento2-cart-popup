@@ -244,12 +244,14 @@ class PopupCartData implements SectionSourceInterface
     private function _upSellingProducts()
     {
         $productIds = [];
-        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-        $upSellProducts = $product->getUpSellProducts();
+				if (!empty($this->checkoutSession->getLastAddedProductId())) {
+						$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+						$upSellProducts = $product->getUpSellProducts();
 
-        foreach ($upSellProducts as $upSellProduct) {
-            $productIds[] = $upSellProduct->getId();
-        }
+						foreach ($upSellProducts as $upSellProduct) {
+								$productIds[] = $upSellProduct->getId();
+						}
+				}
 
         if (empty($productIds)) {
             $this->_randomProducts();
@@ -261,12 +263,14 @@ class PopupCartData implements SectionSourceInterface
     private function _relatedProducts()
     {
         $productIds = [];
-        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-        $relatedProducts = $product->getRelatedProducts();
+				if (!empty($this->checkoutSession->getLastAddedProductId())) {
+						$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+						$relatedProducts = $product->getRelatedProducts();
 
-        foreach ($relatedProducts as $relatedProduct) {
-            $productIds[] = $relatedProduct->getId();
-        }
+						foreach ($relatedProducts as $relatedProduct) {
+								$productIds[] = $relatedProduct->getId();
+						}
+				}
 
         if (empty($productIds)) {
             $this->_randomProducts();
@@ -278,12 +282,14 @@ class PopupCartData implements SectionSourceInterface
     private function _crossSellProducts()
     {
         $productIds = [];
-        $product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
-        $crossSellProducts = $product->getCrossSellProducts();
+				if (!empty($this->checkoutSession->getLastAddedProductId())) {
+						$product = $this->productRepository->getById($this->checkoutSession->getLastAddedProductId());
+						$crossSellProducts = $product->getCrossSellProducts();
 
-        foreach ($crossSellProducts as $crossSellProduct) {
-            $productIds[] = $crossSellProduct->getId();
-        }
+						foreach ($crossSellProducts as $crossSellProduct) {
+								$productIds[] = $crossSellProduct->getId();
+						}
+				}
 
         if (empty($productIds)) {
             $this->_randomProducts();
