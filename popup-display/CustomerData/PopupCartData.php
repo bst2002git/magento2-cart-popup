@@ -29,8 +29,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface as ProductRepositoryInterface
  */
 class PopupCartData implements SectionSourceInterface
 {
-    //const CONFIG_PRODUCT_LIMIT = 4;
-    const CONFIG_PRODUCT_LIMIT = 2;
+    const CONFIG_PRODUCT_LIMIT = 4;
     const CONFIG_COLLECTION_TYPE = 'cartpopup/settings/product_carousel';
 
     /**
