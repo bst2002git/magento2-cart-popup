@@ -103,7 +103,7 @@
 @media only screen and (max-width: 767px) {
     .no-header-footer .modal-product-list li {
         width: 50%;
-				height: 280px;
+        height: 280px;
     }
 
     .no-header-footer .continue-shopping {
